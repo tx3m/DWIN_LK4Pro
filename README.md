@@ -1,49 +1,82 @@
-# NOTICE
-This repository will soon be archived. I do not plan on using this project anymore for the screen firmware. I have another project I started that will replace this. 
-
 # DWIN_LKxPro
 
-Screen firmware for Longer LK4/LK5 Pro. should also work with Alfawise U30 Pro although the boot screen has the Longer3D logo.
+Touch screen firmware for the **Longer LK4 Pro** DWIN screen, for use with
+[Marlin-LK4Pro](https://github.com/tx3m/Marlin-LK4Pro) (Marlin `bugfix-2.1.x` with the DGUS Reloaded screen driver).
 
+This is a continuation of [Guizz27/DWIN_LK4Pro](https://github.com/Guizz27/DWIN_LK4Pro), which is no longer
+maintained. It includes jgbrown54's JGB2.2B update and the changes needed for current Marlin.
 
-**IMPORTANT!! Do not try to update a LK5 Pro if your current screen version (in About screen) has letters "TL5", "DWJT" or "DWJTB".**
+> **Use at your own risk.** The screen firmware and the printer firmware must be updated together.
+> Only use it with [Marlin-LK4Pro](https://github.com/tx3m/Marlin-LK4Pro).
 
-Only use this screen firmware with this version of Marlin https://github.com/Guizz27/Marlin---Longer-LKx-Pro
+## Compatibility
 
-# Installation
-Below you will find brief installation instructions for the screen firmware. 
-Baddflash write a more detailed instructions that also covers the installation of the printer firmware. Take a look here: https://github.com/Baddflash/LK4-Pro-Firmware-Tutorial
+- Tested on the Longer LK4 Pro. The LK5 Pro and Alfawise U30 Pro may work but are untested.
+  The boot screen shows the Longer3D logo.
+- **Do not update a screen whose version (in the About screen) contains "TL5", "DWJT" or "DWJTB".** These screens
+  can't be updated with this firmware.
 
-**To update the screen firmware you need to use a SD card 32GB or less formatted with FAT32 and 4096 bytes allocation units**
+## Installing
 
-## How to install
-1. Use a pre-built version from the release page https://github.com/Guizz27/DWIN_LK4Pro/releases.
-2. In the Assets section, download the DWIN_SET.zip
-3. Unzip it into a folder called DWIN_SET and copy it in the root of a SD card.
-4. Make sure the printer is turned off
-5. Insert the SD card in the screen SD card slot. You need to disassemble the screen mounting frame to access the card slot
-6. Turn on the printer
-7. Wait for the update to complete. It will say "end" when it's done
-8. Turn off the printer and remove the SD card.
-9. Turn the printer on, you should have the new screen.
+You need an SD card of **32 GB or less**, formatted **FAT32** with **4096-byte allocation units**.
 
-**Very important**, the printer firmware also has to be updated.
+1. Download `DWIN_SET.zip` from the [Releases](https://github.com/tx3m/DWIN_LK4Pro/releases) page.
+2. Unzip it into a folder called `DWIN_SET` in the root of the SD card.
+3. Turn the printer off.
+4. Insert the card into the screen's own SD card slot. The screen mounting frame has to be removed to reach it.
+5. Turn the printer on and wait until the screen shows "end".
+6. Turn the printer off, remove the card and turn it on again.
 
-## How to build
-Follow these steps if you prefer to use the source files instead of the already prepared DWIN_SET.zip from the release page.
-1. Execute BuildRelease.bat.
-2. This creates a folder called "Release" with a subfolder "DWIN_SET".
-3. Copy this DWIN_SET folder on the SD card then
-4. Make sure the printer is turned off
-5. Insert the SD card in the screen SD card slot. You need to disassemble the screen mounting frame to access the card slot
-6. Turn on the printer
-7. Wait for the update to complete. It will say "end" when it's done
-8. Turn off the printer and remove the SD card.
-9. Turn the printer on, you should have the new screen.
+Then flash the matching [Marlin-LK4Pro](https://github.com/tx3m/Marlin-LK4Pro) printer firmware.
 
-# License
+For a detailed walkthrough of both updates, see Baddflash's
+[LK4 Pro Firmware Tutorial](https://github.com/Baddflash/LK4-Pro-Firmware-Tutorial) (written for the earlier
+versions, but the steps are the same).
 
-This DWIN_LK4Pro firmware is published under the [GPL license](/LICENSE). The GPL comes with both rights and obligations. Whether you use this firmware as the driver for your open or closed-source product, you must keep it open, and you must provide your compatible firmware source code to end users upon request. The most straightforward way to comply with this license is to make a fork of DWIN_LK4Pro on Github, perform your modifications, and direct users to your modified fork.
+## Building from source
 
-# Disclaimer
-You use this firmware at your own risk and I am not responsible for damages it may cause.
+1. Run `BuildRelease.bat`. It creates `release/DWIN_SET` with the file names and image rotation the screen needs.
+2. Copy that `DWIN_SET` folder to the SD card and follow the installation steps above.
+
+To edit the screens, use DWIN's DGUS editor (DGUS V7.648, available from DWIN) and open `DWprj.hmi`.
+`TouchConfig.xls` and `DisplayConfig.xls` list every button and display field with the address it uses. The names
+match `DGUS_Addr.h` in Marlin-LK4Pro, and the addresses must stay in sync with it.
+
+## Changes
+
+**This fork (tx3m), for Marlin `bugfix-2.1.x`:**
+
+- Addresses aligned with Marlin's DGUS Reloaded driver: Resume button `0x2009`, Pause/Resume icons `0x31BE`,
+  elapsed time `0x30E8`, progress `0x30F7`, screen version `0x2050`.
+- Bed leveling probing screen reworked (grid layout and background).
+- Load and Unload buttons swapped on the filament screen.
+- Button and field positions adjusted on several screens.
+- Names in `TouchConfig.xls` and `DisplayConfig.xls` match Marlin's `DGUS_Addr.h`.
+
+**jgbrown54 (JGB2.2B), for Marlin 2.1.2.1:** separate Pause, Resume and Abort buttons, new bed leveling grid,
+redesigned home, print status, move, filament, advanced settings and runout screens, a new G-code keyboard
+([Guizz27/DWIN_LK4Pro#22](https://github.com/Guizz27/DWIN_LK4Pro/issues/22)), status messages on more screens, and
+design sources for the icons and screens.
+
+**Guizz27:** the original screen design that replaced Longer's stock screens, including the advanced settings,
+EEPROM, runout, PID and G-code entry screens.
+
+The pictures in `Screenshots/` show Guizz27's original design.
+
+## Credits
+
+- [Guizz27](https://github.com/Guizz27): original screen firmware and LKx Pro Marlin port.
+- [jgbrown54](https://github.com/jgbrown54): JGB2.2B update, published here with his permission.
+- [tx3m](https://github.com/tx3m): update for current Marlin.
+- [Baddflash](https://github.com/Baddflash): installation tutorial.
+- The Longer3D logo belongs to Longer.
+
+## License
+
+Published under the [GPL v3 license](/LICENSE), which Guizz27 chose for the original project. You may use, modify and
+share this firmware, but anything you distribute must stay open and come with its source. Pointing people to this
+repository satisfies that.
+
+## Disclaimer
+
+You use this firmware at your own risk. The authors are not responsible for any damage it may cause.
