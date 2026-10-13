@@ -42,6 +42,18 @@ To edit the screens, use DWIN's DGUS editor (DGUS V7.648, available from DWIN) a
 `TouchConfig.xls` and `DisplayConfig.xls` list every button and display field with the address it uses. The names
 match `DGUS_Addr.h` in Marlin-LK4Pro, and the addresses must stay in sync with it.
 
+**The order of touch areas matters on some pages.** Marlin switches some buttons on and off by their number, counted
+from 0 in the order the touch areas are stored in `DWIN_SET/13_touch.bin`:
+
+| Page | Touch area numbers used by Marlin |
+| --- | --- |
+| 2 (file list) | 0 Next page, 2-6 file rows, 7 Back, 8 Previous page |
+| 3 (print status) | 4 Pause, 5 Resume |
+| 249 (wait) | 0 Abort, 1 Continue |
+
+Adding, removing or reordering touch areas on these pages changes the numbers. If you do, update
+`DGUS_Control.h` in Marlin-LK4Pro to match.
+
 ## Changes
 
 **This fork (tx3m), for Marlin `bugfix-2.1.x`:**
